@@ -1,5 +1,6 @@
 const express = require('express');
 const hbs = require('hbs');
+const fs = require('fs');
 
 var app = express();
 
@@ -10,6 +11,26 @@ app.set('view engine', 'hbs');
 //To render static pages
 app.use(express.static(__dirname+'/public'));
 
+app.use((req, res, next)=>{
+  var now = new Date().toString();
+  var log = now+': '+req.method+' '+req.url;
+  fs.appendFile('server.log', log+'\n', (err)=>{
+    if(err){
+        console.log(err);
+    }
+  });
+  next();
+});
+/*
+For Maintenance
+
+app.use((req,res,next)=>{
+  res.render('maintenance.hbs',{
+    pageTitle:'Maintenance',
+    maintenanceMessage: 'Site is under maintenance'
+  });
+});
+*/
 //Register Helper Functions
 hbs.registerHelper('getCurrentYear', ()=>{
   return new Date().getFullYear();
