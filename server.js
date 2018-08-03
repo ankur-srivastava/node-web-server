@@ -2,7 +2,10 @@ const express = require('express');
 const hbs = require('hbs');
 const fs = require('fs');
 
+const {Compute} = require('./compute');
+
 var app = express();
+const compute = new Compute('Jack');
 
 //To use reusable partials
 hbs.registerPartials(__dirname+'/views/partials');
@@ -42,6 +45,13 @@ hbs.registerHelper('screamIt', (text)=>{
 
 
 app.get('/',(req,res)=>{
+
+  /*Testing Classes in JS*/
+  console.log(compute.welcomeMessage());
+  console.log(compute.getProduct(4,7));
+  console.log('Call Compute.getName '+Compute.getName());
+  /*Ends*/
+
   res.render('home.hbs',{
     pageTitle:'Home',
     welcomeMessage: 'Welcome to the Site'
